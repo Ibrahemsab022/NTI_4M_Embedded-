@@ -49,6 +49,9 @@
 #define LCD_CURSOR_ON                        0x0E
 #define LCD_SET_CURSOR_LOCATION              0x80
 
+
+
+
 /*******************************************************************************
  *                      Functions Prototypes                                   *
  *******************************************************************************/
@@ -101,8 +104,30 @@ void LCD_clearScreen(void);
 void LCD_voidSendEnablePulse(void);
 
 
-
+/*
+ * This Function takes a signed 32bit integers from the user and displays it on the LCD
+ * */
 void LCD_DisplayNumber(s32 Number);
+
+
+/**
+ * This function is used to send binary numbers to the LCD
+ * */
+void LCD_DisplayBinary(s8 Copy_s8Data);
+
+/*
+ * This Function is used to Send Floating numbers to thec CLD
+ * */
+
+void LCD_DisplayFloats(f32 Copy_f32FloatNum);
+
+
+/*
+ * This function is used to send special char
+ * */
+
+void LCD_voidSendSpechialChar(u8 *Copy_u8Pattern, u8 Copy_u8PatternID, u8 Copy_u8XPossition, u8 Copy_u8YPossition);
+
 
 
 #endif /* HAL_LCD_LCD_H_ */

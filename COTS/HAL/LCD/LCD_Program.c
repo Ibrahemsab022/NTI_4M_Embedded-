@@ -14,14 +14,6 @@
  * 1. Setup the LCD pins directions by use the GPIO driver.
  * 2. Setup the LCD Data Mode 4-bits or 8-bits.
  */
-
-void LCD_voidSendEnablePulse(void)
-{
-	DIO_voidSetPinValue(LCD_E_PORT_ID, LCD_E_PIN_ID, DIO_u8_HIGH);
-	_delay_ms(2);
-	DIO_voidSetPinValue(LCD_E_PORT_ID, LCD_E_PIN_ID, DIO_u8_LOW);
-
-}
 void LCD_init(void)
 {
 	/* Configure the direction for RS and E pins as output pins */
@@ -109,6 +101,8 @@ void LCD_displayCharacter(u8 data)
 
 }
 
+
+
 /*
  * Description :
  * Display the required string on the screen
@@ -169,6 +163,8 @@ void LCD_DisplayNumber(s32 Copy_s32Number)
 
 }
 
+
+
 /*
  * Description :
  * Move the cursor to a specified row and column index on the screen
@@ -204,7 +200,97 @@ void LCD_moveCursor(u8 row,u8 col)
 }
 
 
+
+/*
+ * This function is used to fully clear the LCD
+ * */
 void LCD_clearScreen(void)
 {
 	LCD_sendCommand(LCD_CLEAR_COMMAND); /* Send clear display command */
+}
+
+
+
+/*This function send a 2ms width pules to the Enable pin*/
+void LCD_voidSendEnablePulse(void)
+{
+	DIO_voidSetPinValue(LCD_E_PORT_ID, LCD_E_PIN_ID, DIO_u8_HIGH);
+	_delay_ms(2);
+	DIO_voidSetPinValue(LCD_E_PORT_ID, LCD_E_PIN_ID, DIO_u8_LOW);
+
+}
+
+
+/*
+ *
+ * This function is used to display binary numbers
+ * */
+void LCD_DisplayBinary(s8 Copy_s8Data)
+{
+
+	u8 Local_u8bit;
+	s8 Local_s8Itterator;
+
+	/*Sending an indicator for binary number*/
+	LCD_displayString("0b");
+
+	/*Extracgting the current bit*/
+	for (Local_s8Itterator = 7; Local_s8Itterator >= 0; Local_s8Itterator--)
+	{
+		Local_u8bit = GET_BIT(Copy_s8Data, Local_s8Itterator);
+		LCD_displayCharacter(Local_u8bit + '0');
+	}
+
+}
+
+
+/*
+ * This Function is used to send floating numbers to the LCD
+ * */
+void LCD_DisplayFloats(f32 Copy_f32FloatNum)
+{
+	s32 Local_s32IntPart = (s32)Copy_f32FloatNum;
+	u16 Local_u16FloatPart= (u16)(((u32)(Copy_f32FloatNum * 1000)) % 1000);
+
+	/*Sending the int part of the floating number*/
+	LCD_DisplayNumber((s32) Local_s32IntPart);
+
+	/*Sending the floating point*/
+	LCD_displayCharacter('.');
+
+	/*Sending the floating part of the floating number*/
+	LCD_DisplayNumber((s32) Local_u16FloatPart);
+
+}
+
+
+
+/*
+ * This function is used to send spechial user-defined shapes by using CGROM
+ * */
+void LCD_voidSendSpechialChar(u8 *Copy_u8Pattern, u8 Copy_u8PatternID, u8 Copy_u8XPossition, u8 Copy_u8YPossition)
+{
+
+	u8 Local_u8CGRAMAdrs = Copy_u8PatternID * 8u;
+	u8 Local_u8LoopCounter;
+
+	/*Set bit number6, for Set_Address of CG command from datasheet*/
+	SET_BIT(Local_u8CGRAMAdrs, 6);
+
+	/*select the address in CGRAM*/
+	LCD_sendCommand(Local_u8CGRAMAdrs);
+
+	/*Write the patter into CGRAM*/
+	for (Local_u8LoopCounter = 0; Local_u8LoopCounter < 8u; Local_u8LoopCounter++)
+	{
+		LCD_displayCharacter(Copy_u8Pattern[Local_u8LoopCounter]);
+	}
+
+	/*back to DDRAM, to display the patterns*/
+	LCD_moveCursor(Copy_u8YPossition, Copy_u8XPossition);
+
+	/*Display the pattern written inside the CGRAM*/
+	LCD_displayCharacter(Copy_u8PatternID);
+
+
 }
