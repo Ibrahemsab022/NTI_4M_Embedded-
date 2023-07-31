@@ -57,6 +57,40 @@ void DIO_voidSetPinValue(u8 Copy_u8PortId, u8 Copy_u8PinId, u8 Copy_u8Value)
 }
 
 
+
+
+/*****************************************************************************************************************/
+/* Function: DIO_ToggPinValue	                        				     								 */
+/* Input/outPut Parameters:PortId		          		                            							 */
+/* Returns: returns an unsigned 8 bit data (u8)          				                    	                 */
+/* Descruption:this func takes the PortId wehther Port A,B,C or D and returns the content of the port as a u8    */
+/*****************************************************************************************************************/
+void DIO_voidToggPinValue(u8 Copy_u8PortId, u8 Copy_u8PinId)
+{
+
+
+    if((Copy_u8PortId <= DIO_u8_PORTD) || (Copy_u8PinId <= DIO_u8_PIN7))
+    {
+
+        switch(Copy_u8PortId)
+        {
+            case DIO_u8_PORTA:    TOG_BIT(DIO_u8_PORTA_REG, Copy_u8PinId); break;
+            case DIO_u8_PORTB:    TOG_BIT(DIO_u8_PORTB_REG, Copy_u8PinId); break;
+            case DIO_u8_PORTC:    TOG_BIT(DIO_u8_PORTC_REG, Copy_u8PinId); break;
+            case DIO_u8_PORTD:    TOG_BIT(DIO_u8_PORTD_REG, Copy_u8PinId); break;
+            default: /*do nothing*/ break;
+        }
+    }
+
+    else
+    {
+    	/*do nothing*/
+    }
+
+}
+
+
+
 /*********************************************************************************************************************************************/
 /* Function: 				DIO_voidSetPinDirection	                        				    										     */
 /* Input/outPut Parameters:	PortId, PinId and Direction		          		                            								     */
@@ -172,10 +206,10 @@ void DIO_voidSetPortDirection(u8 Copy_u8PortId, u8 Copy_u8Direction)
 	{
 		switch(Copy_u8PortId)
 		{
-			case DIO_u8_PORTA: DIO_u8_DDRA_REG = Copy_u8Direction; break;
-			case DIO_u8_PORTB: DIO_u8_DDRB_REG = Copy_u8Direction; break;
-			case DIO_u8_PORTC: DIO_u8_DDRC_REG = Copy_u8Direction; break;
-			case DIO_u8_PORTD: DIO_u8_DDRD_REG = Copy_u8Direction; break;
+			case DIO_u8_PORTA: DIO_u8_PORTA_REG = Copy_u8Direction; break;
+			case DIO_u8_PORTB: DIO_u8_PORTB_REG = Copy_u8Direction; break;
+			case DIO_u8_PORTC: DIO_u8_PORTC_REG = Copy_u8Direction; break;
+			case DIO_u8_PORTD: DIO_u8_PORTD_REG = Copy_u8Direction; break;
 		}
 	}
 

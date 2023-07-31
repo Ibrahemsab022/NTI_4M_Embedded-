@@ -47,6 +47,20 @@ void DIO_voidSetPinDirection(u8 Copy_u8PortId, u8 Copy_u8PinId, u8 Copy_u8Direct
 
 
 
+/*****************************************************************************************************************/
+/* Function: DIO_ToggPinValue	                        				     								 */
+/* Input/outPut Parameters:PortId		          		                            							 */
+/* Returns: returns an unsigned 8 bit data (u8)          				                    	                 */
+/* Descruption:this func takes the PortId wehther Port A,B,C or D and returns the content of the port as a u8    */
+/*****************************************************************************************************************/
+void DIO_voidToggPinValue(u8 Copy_u8PortId, u8 Copy_u8PinId);
+
+
+
+
+
+
+
 /*******************************************************************************************************************/
 /* Function: DIO_voidGetPinValue	                        				     							       */
 /* Input/outPut Parameters:	PortId, PinID		          		                                                   */
