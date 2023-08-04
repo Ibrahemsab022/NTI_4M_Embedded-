@@ -45,6 +45,7 @@
 			{
 				switch (HSESrc)
 				{
+
 					// HSE CRYSTAL
 					case  HSE_Crystal : SET_BIT(RCC_CR, RCC_CR_HSEON); CLR_BIT(RCC_CR, RCC_CR_HSEBYP); break;
 
@@ -56,6 +57,10 @@
 						SET_BIT(RCC_CR, RCC_CR_HSEON); CLR_BIT(RCC_CR, RCC_CR_HSEBYP); break;
 				}
 
+				/*Setting the switch mode (SW bits in RCC_CFGR)*/
+				RCC_CFGR &= ~(0b11);
+				RCC_CFGR |= RCC_HSE;
+
 			}break;
 
 			 /*******************************************************************************/ 
@@ -63,6 +68,10 @@
 			case RCC_HSI:
 			{
 				SET_BIT(RCC_CR, RCC_CR_HSION);
+
+		/*Setting the switch mode (SW bits in RCC_CFGR)*/
+		RCC_CFGR &= ~(0b11);
+		RCC_CFGR |= RCC_HSI;
 			}break;
 
 			/*********************************************************************************/
@@ -76,6 +85,12 @@
 					 case PLL_HSI: CLR_BIT(RCC_PLLCFGR, RCC_PLLCFGR_PLLSRC); break;
 					 default: SET_BIT(RCC_PLLCFGR, RCC_PLLCFGR_PLLSRC); /*PLL with internal*/
 					 
+
+
+			/*Setting the switch mode (SW bits in RCC_CFGR)*/
+			RCC_CFGR &= ~(0b11);
+			RCC_CFGR |= RCC_PLL;
+
 				 }break;
 
 			
